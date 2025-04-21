@@ -105,8 +105,8 @@
   <h1>🍌 FamilyCart</h1>
 
   <div class="upload-section">
-    <p><strong>Upload a DoorDash screenshot</strong><br>to create your grocery list</p>
-    <label for="screenshot-upload" class="upload-label">📸 Choose Screenshot</label>
+    <p><strong>Upload a DoorDash screenshot</strong><br>to add stuff to the list</p>
+    <label for="screenshot-upload" class="upload-label">📸 Upload</label>
     <input id="screenshot-upload" type="file" accept="image/*" x-ref="screenshot" @change="uploadScreenshot">
   </div>
 
@@ -117,7 +117,7 @@
 
   <ul>
     <template x-if="items.length === 0">
-      <li style="color: #888;">No items yet. Add one above!</li>
+      <li style="color: #888;">¯\_(ツ)_/¯</li>
     </template>
     <template x-for="item in items" :key="item.id">
       <li>
