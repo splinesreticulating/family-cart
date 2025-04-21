@@ -116,6 +116,9 @@
   </form>
 
   <ul>
+    <template x-if="items.length === 0">
+      <li style="color: #888;">No items yet. Add one above!</li>
+    </template>
     <template x-for="item in items" :key="item.id">
       <li>
         <span
@@ -140,10 +143,21 @@
       return {
         items: [],
         newItem: '',
+        
+        init() {
+          this.loadItems();
+        },
 
         async loadItems() {
-          const res = await fetch('/items');
-          this.items = await res.json();
+          try {
+            const res = await fetch('/items');
+            const data = await res.json();
+            console.log('Fetched items:', data);
+            this.items = data;
+          } catch (e) {
+            console.error('Failed to load items:', e);
+            this.items = [];
+          }
         },
 
         async addItem() {
