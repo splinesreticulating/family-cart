@@ -1,6 +1,6 @@
 import Database from 'better-sqlite3';
 
-const db = new Database('familycart.db');
+const db = new Database('items.db');
 
 db.exec(`
   CREATE TABLE IF NOT EXISTS items (
