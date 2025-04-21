@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { fileURLToPath } from 'url';
 import express from 'express';
 import multer from 'multer';
-import db from './db.js';
+import db from './db';
 import path from 'path';
 import cors from 'cors';
 
@@ -76,6 +76,11 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.listen(3000, () => {
-  console.log('✅ FamilyCart is running at http://localhost:3000');
-});
+// Only start the server if this file is run directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  app.listen(3000, () => {
+    console.log('✅ FamilyCart is running at http://localhost:3000');
+  });
+}
+
+export { app };
