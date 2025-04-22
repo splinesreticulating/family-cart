@@ -19,7 +19,7 @@ app.use(express.static(__dirname)); // serve index.html and assets
 // CRUD endpoints
 app.get('/items', ((req: Request, res: Response) => {
   try {
-  const items = db.prepare('SELECT * FROM items ORDER BY created_at').all();
+    const items = db.prepare('SELECT * FROM items ORDER BY created_at').all();
     res.json(items);
   } catch (err) {
     res.status(500).json({ error: 'Database error' });
@@ -28,12 +28,12 @@ app.get('/items', ((req: Request, res: Response) => {
 
 app.post('/items', ((req: Request, res: Response) => {
   try {
-  const { name } = req.body;
-  if (!name) {
-    return res.status(400).json({ error: 'Name is required' });
-  }
-  const id = uuidv4();
-  db.prepare('INSERT INTO items (id, name) VALUES (?, ?)').run(id, name);
+    const { name } = req.body;
+    if (!name) {
+      return res.status(400).json({ error: 'Name is required' });
+    }
+    const id = uuidv4();
+    db.prepare('INSERT INTO items (id, name) VALUES (?, ?)').run(id, name);
     res.status(201).json({ id, name });
   } catch (err) {
     res.status(500).json({ error: 'Database error' });
@@ -42,7 +42,7 @@ app.post('/items', ((req: Request, res: Response) => {
 
 app.post('/items/:id/toggle', ((req: Request, res: Response) => {
   try {
-  db.prepare('UPDATE items SET checked = NOT checked WHERE id = ?').run(req.params.id);
+    db.prepare('UPDATE items SET checked = NOT checked WHERE id = ?').run(req.params.id);
     res.sendStatus(204);
   } catch (err) {
     res.status(500).json({ error: 'Database error' });
@@ -51,7 +51,7 @@ app.post('/items/:id/toggle', ((req: Request, res: Response) => {
 
 app.delete('/items/:id', ((req: Request, res: Response) => {
   try {
-  db.prepare('DELETE FROM items WHERE id = ?').run(req.params.id);
+    db.prepare('DELETE FROM items WHERE id = ?').run(req.params.id);
     res.sendStatus(204);
   } catch (err) {
     res.status(500).json({ error: 'Database error' });
@@ -60,8 +60,8 @@ app.delete('/items/:id', ((req: Request, res: Response) => {
 
 app.put('/items/:id', ((req: Request, res: Response) => {
   try {
-  const { name } = req.body;
-  db.prepare('UPDATE items SET name = ? WHERE id = ?').run(name, req.params.id);
+    const { name } = req.body;
+    db.prepare('UPDATE items SET name = ? WHERE id = ?').run(name, req.params.id);
     res.sendStatus(204);
   } catch (err) {
     res.status(500).json({ error: 'Database error' });
