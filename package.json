@@ -5,7 +5,10 @@
   "scripts": {
     "test": "NODE_ENV=test vitest run",
     "test:watch": "NODE_ENV=test vitest watch",
-    "dev": "npx tsx src/server.ts"
+    "dev": "npx tsx src/server.ts",
+    "format": "biome format --write .",
+    "lint": "biome lint .",
+    "check": "biome check --apply ."
   },
   "keywords": [],
   "author": "",
@@ -21,6 +24,7 @@
     "uuid": "^11.1.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.6.0",
     "@types/better-sqlite3": "^7.6.13",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.1",
