@@ -58,9 +58,9 @@ export function extractItemsFromOcr(rawText: string): string[] {
         }
         // If line contains both product info and a quantity marker
         if (qtyMarkerInline.test(line)) {
-            const splitLine = line.split(qtyMarkerInline);
-            const beforeMarker = splitLine.slice(0, -1).join(' ').trim();
+            // Remove the quantity marker from the line for the item name
             const marker = line.match(qtyMarkerInline)?.[0];
+            const beforeMarker = line.replace(qtyMarkerInline, '').replace(/\s+/g, ' ').trim();
             if (beforeMarker) itemBuffer.push(beforeMarker);
             flushItemWithQuantity(marker);
             continue;
