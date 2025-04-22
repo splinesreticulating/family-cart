@@ -3,7 +3,7 @@ function familycartApp() {
         items: [],
         newItem: '',
         editingId: null, // Track which item is being edited
-        editValue: '',   // Current value during editing
+        editValue: '', // Current value during editing
 
         init() {
             this.loadItems()
@@ -32,40 +32,38 @@ function familycartApp() {
             this.loadItems()
         },
 
-
-
         async deleteItem(id) {
             await fetch(`/items/${id}`, { method: 'DELETE' })
             this.loadItems()
         },
 
         startEditing(item) {
-            this.editingId = item.id;
-            this.editValue = item.name;
+            this.editingId = item.id
+            this.editValue = item.name
             this.$nextTick(() => {
-                const input = this.$root.querySelector(`#edit-input-${item.id}`);
-                if (input) input.focus();
-            });
+                const input = this.$root.querySelector(`#edit-input-${item.id}`)
+                if (input) input.focus()
+            })
         },
 
         async saveEdit(item) {
-            const newName = this.editValue.trim();
+            const newName = this.editValue.trim()
             if (!newName || newName === item.name) {
-                this.cancelEdit();
-                return;
+                this.cancelEdit()
+                return
             }
             await fetch(`/items/${item.id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name: newName }),
-            });
-            this.cancelEdit();
-            this.loadItems();
+            })
+            this.cancelEdit()
+            this.loadItems()
         },
 
         cancelEdit() {
-            this.editingId = null;
-            this.editValue = '';
+            this.editingId = null
+            this.editValue = ''
         },
 
         async uploadScreenshot() {

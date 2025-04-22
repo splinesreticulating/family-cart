@@ -1,12 +1,12 @@
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+import cors from 'cors'
+import express, { type Request, type Response, type RequestHandler } from 'express'
+import multer from 'multer'
 import Tesseract from 'tesseract.js'
 import { v4 as uuidv4 } from 'uuid'
-import { fileURLToPath } from 'url'
-import express, { Request, Response, RequestHandler } from 'express'
-import multer from 'multer'
 import db from './db'
-import path from 'path'
-import cors from 'cors'
-import { extractItemsFromOcr } from './ocrExtract';
+import { extractItemsFromOcr } from './ocrExtract'
 
 const app = express()
 const upload = multer({ storage: multer.memoryStorage() })
@@ -36,18 +36,6 @@ app.post('/items', ((req: Request, res: Response) => {
         const id = uuidv4()
         db.prepare('INSERT INTO items (id, name) VALUES (?, ?)').run(id, name)
         res.status(201).json({ id, name })
-    } catch (err) {
-        res.status(500).json({ error: 'Database error' })
-    }
-}) as RequestHandler)
-
-app.post('/items/:id/toggle', ((req: Request, res: Response) => {
-    try {
-        const result = db.prepare('UPDATE items SET checked = NOT checked WHERE id = ?').run(req.params.id)
-        if (result.changes === 0) {
-            return res.status(404).json({ error: 'Item not found' })
-        }
-        res.sendStatus(204)
     } catch (err) {
         res.status(500).json({ error: 'Database error' })
     }
@@ -87,7 +75,7 @@ app.post('/upload', upload.single('screenshot'), (async (req: Request, res: Resp
         const { buffer } = req.file as Express.Multer.File
         const result = await Tesseract.recognize(buffer, 'eng')
 
-        const items = extractItemsFromOcr(result.data.text);
+        const items = extractItemsFromOcr(result.data.text)
 
         const insert = db.prepare('INSERT INTO items (id, name) VALUES (?, ?)')
         for (const name of items) {

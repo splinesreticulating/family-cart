@@ -1,8 +1,8 @@
+import { existsSync } from 'node:fs'
+import { unlink } from 'node:fs/promises'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import Database from 'better-sqlite3'
-import { fileURLToPath } from 'url'
-import path from 'path'
-import { existsSync } from 'fs'
-import { unlink } from 'fs/promises'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -22,7 +22,6 @@ const initDb = async () => {
     CREATE TABLE IF NOT EXISTS items (
       id TEXT PRIMARY KEY,
       name TEXT NOT NULL,
-      checked INTEGER DEFAULT 0,
       created_at TEXT DEFAULT CURRENT_TIMESTAMP
     );
   `)
