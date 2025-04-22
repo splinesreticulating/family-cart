@@ -35,8 +35,8 @@ familycart/
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/yourusername/familycart.git
-cd familycart
+git clone https://github.com/splinesreticulating/family-cart.git
+cd family-cart
 ```
 
 ### 2. Install dependencies
