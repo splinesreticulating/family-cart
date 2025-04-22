@@ -42,7 +42,10 @@ app.post('/items', ((req: Request, res: Response) => {
 
 app.post('/items/:id/toggle', ((req: Request, res: Response) => {
     try {
-        db.prepare('UPDATE items SET checked = NOT checked WHERE id = ?').run(req.params.id)
+        const result = db.prepare('UPDATE items SET checked = NOT checked WHERE id = ?').run(req.params.id)
+        if (result.changes === 0) {
+            return res.status(404).json({ error: 'Item not found' })
+        }
         res.sendStatus(204)
     } catch (err) {
         res.status(500).json({ error: 'Database error' })
@@ -51,7 +54,10 @@ app.post('/items/:id/toggle', ((req: Request, res: Response) => {
 
 app.delete('/items/:id', ((req: Request, res: Response) => {
     try {
-        db.prepare('DELETE FROM items WHERE id = ?').run(req.params.id)
+        const result = db.prepare('DELETE FROM items WHERE id = ?').run(req.params.id)
+        if (result.changes === 0) {
+            return res.status(404).json({ error: 'Item not found' })
+        }
         res.sendStatus(204)
     } catch (err) {
         res.status(500).json({ error: 'Database error' })
@@ -61,7 +67,10 @@ app.delete('/items/:id', ((req: Request, res: Response) => {
 app.put('/items/:id', ((req: Request, res: Response) => {
     try {
         const { name } = req.body
-        db.prepare('UPDATE items SET name = ? WHERE id = ?').run(name, req.params.id)
+        const result = db.prepare('UPDATE items SET name = ? WHERE id = ?').run(name, req.params.id)
+        if (result.changes === 0) {
+            return res.status(404).json({ error: 'Item not found' })
+        }
         res.sendStatus(204)
     } catch (err) {
         res.status(500).json({ error: 'Database error' })
