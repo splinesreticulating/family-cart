@@ -2,6 +2,8 @@ function familycartApp() {
     return {
         items: [],
         newItem: '',
+        editingId: null, // Track which item is being edited
+        editValue: '',   // Current value during editing
 
         init() {
             this.loadItems()
@@ -40,15 +42,33 @@ function familycartApp() {
             this.loadItems()
         },
 
-        async editItem(item) {
-            const newName = prompt('Edit item name:', item.name)
-            if (!newName || newName === item.name) return
+        startEditing(item) {
+            this.editingId = item.id;
+            this.editValue = item.name;
+            this.$nextTick(() => {
+                const input = this.$root.querySelector(`#edit-input-${item.id}`);
+                if (input) input.focus();
+            });
+        },
+
+        async saveEdit(item) {
+            const newName = this.editValue.trim();
+            if (!newName || newName === item.name) {
+                this.cancelEdit();
+                return;
+            }
             await fetch(`/items/${item.id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name: newName }),
-            })
-            this.loadItems()
+            });
+            this.cancelEdit();
+            this.loadItems();
+        },
+
+        cancelEdit() {
+            this.editingId = null;
+            this.editValue = '';
         },
 
         async uploadScreenshot() {
