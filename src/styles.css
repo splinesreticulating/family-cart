@@ -54,6 +54,12 @@ li {
   border-bottom: 1px solid #eee;
 }
 
+li.empty-state {
+  display: block;
+  text-align: center;
+  padding: 2rem 0;
+}
+
 .checked {
   text-decoration: line-through;
   color: #888;

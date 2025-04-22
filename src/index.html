@@ -23,7 +23,7 @@
 
   <ul>
     <template x-if="items.length === 0">
-      <li style="color: #888;">¯\_(ツ)_/¯</li>
+      <li class="empty-state" style="color: #888;">¯\_(ツ)_/¯</li>
     </template>
     <template x-for="item in items" :key="item.id">
       <li>
