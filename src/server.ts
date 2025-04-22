@@ -6,6 +6,7 @@ import multer from 'multer'
 import db from './db'
 import path from 'path'
 import cors from 'cors'
+import { extractItemsFromOcr } from './ocrExtract';
 
 const app = express()
 const upload = multer({ storage: multer.memoryStorage() })
@@ -86,17 +87,17 @@ app.post('/upload', upload.single('screenshot'), (async (req: Request, res: Resp
         const { buffer } = req.file as Express.Multer.File
         const result = await Tesseract.recognize(buffer, 'eng')
 
-        const lines = result.data.text
-            .split('\n')
-            .map((line) => line.trim())
-            .filter(Boolean)
+        // Log the raw OCR result for analysis
+        console.log('Raw OCR result:', JSON.stringify(result, null, 2));
+
+        const items = extractItemsFromOcr(result.data.text);
 
         const insert = db.prepare('INSERT INTO items (id, name) VALUES (?, ?)')
-        for (const name of lines) {
+        for (const name of items) {
             insert.run(uuidv4(), name)
         }
 
-        res.status(200).json({ success: true, itemsAdded: lines.length })
+        res.status(200).json({ success: true, itemsAdded: items.length, items })
     } catch (err) {
         console.error(err)
         res.status(500).json({ error: 'OCR failed' })
