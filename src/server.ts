@@ -1,7 +1,7 @@
 import Tesseract from 'tesseract.js';
 import { v4 as uuidv4 } from 'uuid';
 import { fileURLToPath } from 'url';
-import express from 'express';
+import express, { Request, Response, RequestHandler } from 'express';
 import multer from 'multer';
 import db from './db';
 import path from 'path';
@@ -17,36 +17,59 @@ app.use(express.json());
 app.use(express.static(__dirname)); // serve index.html and assets
 
 // CRUD endpoints
-app.get('/items', (req, res) => {
+app.get('/items', ((req: Request, res: Response) => {
+  try {
   const items = db.prepare('SELECT * FROM items ORDER BY created_at').all();
-  res.json(items);
-});
+    res.json(items);
+  } catch (err) {
+    res.status(500).json({ error: 'Database error' });
+  }
+}) as RequestHandler);
 
-app.post('/items', (req, res) => {
+app.post('/items', ((req: Request, res: Response) => {
+  try {
   const { name } = req.body;
+  if (!name) {
+    return res.status(400).json({ error: 'Name is required' });
+  }
   const id = uuidv4();
   db.prepare('INSERT INTO items (id, name) VALUES (?, ?)').run(id, name);
-  res.status(201).json({ id, name });
-});
+    res.status(201).json({ id, name });
+  } catch (err) {
+    res.status(500).json({ error: 'Database error' });
+  }
+}) as RequestHandler);
 
-app.post('/items/:id/toggle', (req, res) => {
+app.post('/items/:id/toggle', ((req: Request, res: Response) => {
+  try {
   db.prepare('UPDATE items SET checked = NOT checked WHERE id = ?').run(req.params.id);
-  res.sendStatus(204);
-});
+    res.sendStatus(204);
+  } catch (err) {
+    res.status(500).json({ error: 'Database error' });
+  }
+}) as RequestHandler);
 
-app.delete('/items/:id', (req, res) => {
+app.delete('/items/:id', ((req: Request, res: Response) => {
+  try {
   db.prepare('DELETE FROM items WHERE id = ?').run(req.params.id);
-  res.sendStatus(204);
-});
+    res.sendStatus(204);
+  } catch (err) {
+    res.status(500).json({ error: 'Database error' });
+  }
+}) as RequestHandler);
 
-app.put('/items/:id', (req, res) => {
+app.put('/items/:id', ((req: Request, res: Response) => {
+  try {
   const { name } = req.body;
   db.prepare('UPDATE items SET name = ? WHERE id = ?').run(name, req.params.id);
-  res.sendStatus(204);
-});
+    res.sendStatus(204);
+  } catch (err) {
+    res.status(500).json({ error: 'Database error' });
+  }
+}) as RequestHandler);
 
 // OCR upload
-app.post('/upload', upload.single('screenshot'), async (req, res) => {
+app.post('/upload', upload.single('screenshot'), (async (req: Request, res: Response) => {
   try {
     if (!req.file || !('buffer' in req.file)) {
       res.status(400).json({ error: 'No file uploaded or missing buffer property.' });
@@ -69,12 +92,16 @@ app.post('/upload', upload.single('screenshot'), async (req, res) => {
     console.error(err);
     res.status(500).json({ error: 'OCR failed' });
   }
-});
+})  as RequestHandler);
 
 // serve fallback index.html
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
+app.get('*', ((req: Request, res: Response) => {
+  try {
+    res.sendFile(path.join(__dirname, 'index.html'));
+  } catch (err) {
+    res.status(500).json({ error: 'File not found' });
+  }
+}) as RequestHandler);
 
 // Only start the server if this file is run directly
 if (import.meta.url === `file://${process.argv[1]}`) {
@@ -83,4 +110,4 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   });
 }
 
-export { app };
+export { app, db };

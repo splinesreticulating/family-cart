@@ -1,6 +1,7 @@
 import Database from 'better-sqlite3';
 
-const db = new Database('items.db');
+const dbFile = process.env.NODE_ENV === 'test' ? 'test-items.db' : 'items.db';
+const db = new Database(dbFile);
 
 db.exec(`
   CREATE TABLE IF NOT EXISTS items (
