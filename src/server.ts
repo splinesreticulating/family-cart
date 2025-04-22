@@ -87,9 +87,6 @@ app.post('/upload', upload.single('screenshot'), (async (req: Request, res: Resp
         const { buffer } = req.file as Express.Multer.File
         const result = await Tesseract.recognize(buffer, 'eng')
 
-        // Log the raw OCR result for analysis
-        console.log('Raw OCR result:', JSON.stringify(result, null, 2));
-
         const items = extractItemsFromOcr(result.data.text);
 
         const insert = db.prepare('INSERT INTO items (id, name) VALUES (?, ?)')
