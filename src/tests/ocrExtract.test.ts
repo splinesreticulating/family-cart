@@ -1,4 +1,4 @@
-import { extractItemsFromOcr } from './ocrExtract';
+import { extractItemsFromOcr } from '../ocrExtract';
 import { describe, it, expect } from 'vitest';
 
 describe('extractItemsFromOcr', () => {
