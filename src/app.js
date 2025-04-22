@@ -32,10 +32,7 @@ function familycartApp() {
             this.loadItems()
         },
 
-        async toggleItem(id) {
-            await fetch(`/items/${id}/toggle`, { method: 'POST' })
-            this.loadItems()
-        },
+
 
         async deleteItem(id) {
             await fetch(`/items/${id}`, { method: 'DELETE' })

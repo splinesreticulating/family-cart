@@ -60,10 +60,7 @@ li.empty-state {
   padding: 2rem 0;
 }
 
-.checked {
-  text-decoration: line-through;
-  color: #888;
-}
+
 
 .upload-section {
   border: 2px dashed #ccc;

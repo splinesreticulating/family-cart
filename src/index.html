@@ -11,7 +11,7 @@
   <h1>🍌 FamilyCart</h1>
 
   <div class="upload-section">
-    <p><strong>Upload a DoorDash screenshot</strong><br>to add stuff to the list</p>
+    <p><strong>Upload a DoorDash screenshot</strong><br>to add things to the list</p>
     <label for="screenshot-upload" class="upload-label">📸 Upload</label>
     <input id="screenshot-upload" type="file" accept="image/*" x-ref="screenshot" @change="uploadScreenshot">
   </div>
@@ -40,7 +40,6 @@
         </template>
         <template x-if="editingId !== item.id">
           <span
-            :class="{ 'checked': item.checked }"
             @click="startEditing(item)"
             tabindex="0"
             style="cursor: pointer; font-size: 1rem;"
@@ -49,7 +48,7 @@
           </span>
         </template>
         <div>
-          <button @click="toggleItem(item.id)">✔️</button>
+          
           <button @click="deleteItem(item.id)">🗑️</button>
         </div>
       </li>
