@@ -5,8 +5,8 @@ import express, { type Request, type Response, type RequestHandler } from 'expre
 import multer from 'multer'
 import Tesseract from 'tesseract.js'
 import { v4 as uuidv4 } from 'uuid'
-import db from './db'
-import { extractItemsFromOcr } from './ocrExtract'
+import db from './db.js'
+import { extractItemsFromOcr } from './ocrExtract.js'
 
 const app = express()
 const upload = multer({ storage: multer.memoryStorage() })
