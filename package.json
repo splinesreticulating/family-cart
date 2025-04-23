@@ -9,7 +9,7 @@
     "format": "biome format --write .",
     "lint": "biome lint .",
     "check": "biome check --apply .",
-    "build": "tsc",
+    "build": "tsc && cp src/*.html src/*.css src/*.js dist/ && rm -rf dist/tests",
     "start": "node dist/server.js"
   },
   "keywords": [],
