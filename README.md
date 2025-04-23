@@ -1,67 +1,63 @@
-# 🍌 FamilyCart
+# FamilyCart
 
-**FamilyCart** is a dead-simple, mobile-first grocery list app for your family. You can:
+**FamilyCart** is a simple, mobile-first grocery list app for your family. You can:
 
 - ✅ Add, edit, and delete items on a shared grocery list
-- 📸 Upload DoorDash screenshots — the app will OCR the image and extract items automatically
-- 💾 All data is stored locally using SQLite
-- ⚡ Runs entirely on one port with no build step
+- 🖼️ Upload DoorDash screenshots — the app will OCR the image and extract items automatically (Tesseract.js)
+- 🧠 All data is stored locally using SQLite
+- ⚡ Runs entirely on one port with zero external services
 
 ---
 
-## 📁 Folder Structure
-
+## 🗂 Folder Structure
 ```
-familycart/
-├── index.html       # The entire frontend (Alpine.js)
-├── server.ts        # Express backend (TypeScript + ESM)
-├── db.ts            # SQLite setup
-├── familycart.db    # SQLite database (created automatically)
-├── package.json     # NPM dependencies + scripts
-├── tsconfig.json    # TypeScript config
+    family-cart/
+    ├── src/                 # TypeScript source files and frontend assets
+    │   ├── server.ts        # Express backend (ESM)
+    │   ├── db.ts            # SQLite DB init
+    │   ├── index.html       # Frontend entry point
+    │   ├── styles.css       # Styles
+    │   └── app.js           # Minimal Alpine.js interactivity
+    ├── dist/                # Compiled output for deployment
+    ├── familycart.db        # Local SQLite DB (auto-created)
+    ├── package.json         # Scripts & dependencies
+    ├── tsconfig.json        # TypeScript config
 ```
-
 ---
 
-## 🧰 Requirements
+## 🚀 Requirements
 
-- Node.js 18+
+- Node.js **v18+** (tested with v21 on Raspberry Pi)
 - npm
+- For Pi: `build-essential`, `g++`, `make`, and `python3` to compile `better-sqlite3`
 
 ---
 
-## 🚀 Installation & Setup
+## 🔧 Local Development
 
-### 1. Clone the repo
+- git clone https://github.com/splinesreticulating/family-cart.git
+- cd family-cart
+- npm install
+- npm run dev
 
-```bash
-git clone https://github.com/splinesreticulating/family-cart.git
-cd family-cart
-```
+Then open your browser to  `http://localhost:3000`
 
-### 2. Install dependencies
+---
 
-```bash
-npm install
-```
+## 🏗 Production Build (e.g. Raspberry Pi)
 
-### 3. Start the server
+- npm run build
+- NODE_ENV=production npm start
 
-```bash
-npx tsx server.ts
-```
+This compiles the backend and copies static assets (`index.html`, `styles.css`, `app.js`) to `dist/`. The app runs from `dist/server.js`.
 
-Then open your browser to:
-
-```
-http://localhost:3000
-```
+> If running on a Raspberry Pi, be sure to run `npm rebuild better-sqlite3` after install so it compiles natively for your architecture.
 
 ---
 
 ## ✨ Notes
 
-- This app uses Alpine.js instead of a frontend framework like Svelte or React for simplicity
-- Screenshots are never saved — OCR is done entirely in-memory
-- Perfect for sharing between family members on the same Wi-Fi
-
+- 🧠 OCR runs entirely in-memory (Tesseract.js)
+- 🧘 Uses Alpine.js instead of a heavyweight frontend framework
+- 🐢 Runs great on lightweight hardware like Raspberry Pi Zero or 3/4
+- 🤝 Perfect for families sharing the same Wi-Fi
