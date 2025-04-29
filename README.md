@@ -1,4 +1,4 @@
-# FamilyCart
+# 🍌 FamilyCart
 
 **FamilyCart** is a simple, mobile-first grocery list app for your family. You can:
 
