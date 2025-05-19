@@ -3,9 +3,7 @@
 **FamilyCart** is a simple, mobile-first grocery list app for your family. You can:
 
 - ✅ Add, edit, and delete items on a shared grocery list
-- 🖼️ Upload DoorDash screenshots — the app will OCR the image and extract items automatically (Tesseract.js)
-- 🧠 All data is stored locally using SQLite
-- ⚡ Runs entirely on one port with zero external services
+- 🖼️ Upload DoorDash screenshots — items are OCR'd onto the list
 
 ---
 
